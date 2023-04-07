@@ -41,7 +41,7 @@ class _SensoresState extends State<Sensores> {
           SfCartesianChart(
               primaryXAxis: CategoryAxis(),
               // Chart title
-              title: ChartTitle(text: 'Half yearly sales analysis'),
+              title: ChartTitle(text: 'Niveles de azucar en los ultimos meses'),
               // Enable legend
               legend: Legend(isVisible: true),
               // Enable tooltip
@@ -51,29 +51,11 @@ class _SensoresState extends State<Sensores> {
                     dataSource: data,
                     xValueMapper: (_SalesData sales, _) => sales.temperatura,
                     yValueMapper: (_SalesData sales, _) => sales.humedad,
-                    name: 'Sales',
+                    name: 'Azucar',
                     // Enable data label
                     dataLabelSettings: const DataLabelSettings(isVisible: true))
               ]),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              //Initialize the spark charts widget
-              child: SfSparkLineChart.custom(
-                //Enable the trackball
-                trackball: const SparkChartTrackball(
-                    activationMode: SparkChartActivationMode.tap),
-                //Enable marker
-                marker: const SparkChartMarker(
-                    displayMode: SparkChartMarkerDisplayMode.all),
-                //Enable data label
-                labelDisplayMode: SparkChartLabelDisplayMode.all,
-                xValueMapper: (int index) => data[index].temperatura,
-                yValueMapper: (int index) => data[index].humedad,
-                dataCount: 5,
-              ),
-            ),
-          )
+         
         ]);
   }
 }
