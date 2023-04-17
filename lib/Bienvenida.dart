@@ -15,9 +15,10 @@ class Bienvenida extends StatefulWidget {
 class _BienvenidaState extends State<Bienvenida> {
   int currentIndex = 0;
   late PageController _pageController;
-  List<OnboardModel> screens = <OnboardModel>[
-    OnboardModel(
-      img: 'asset/onboar.jpg',
+  static String pathImage="asset/OnBoart/";
+  List<OnboardModel> screens = [
+     OnboardModel(
+      img: "${pathImage}onboar.jpg",
       text: "Registra tus datos",
       desc:
           "La aplicacion te hara un breve cuestionario para poder ayudarte de la mejor manera con tus medicamentos",
@@ -25,7 +26,7 @@ class _BienvenidaState extends State<Bienvenida> {
       button: Color(0xFF4756DF),
     ),
     OnboardModel(
-      img: 'asset/onboar2.jpg',
+      img: '${pathImage}onboar2.jpg',
       text: "Regulacion de azucar en la sangre",
       desc:
           "Debido a que la diabetes es la irregularidad de azucar en la sangre es necesarion contan un medidor de azucar en esta ",
@@ -33,7 +34,7 @@ class _BienvenidaState extends State<Bienvenida> {
       button: Color(0xFF4756DF),
     ),
     OnboardModel(
-      img: 'asset/onboar3.jpg',
+      img: '${pathImage}onboar3.jpg',
       text: "Recordatorio para tus medicinas",
       desc:
           "Con alarmas y notificaciones se te recordara la hora y el medicamento que debes tomar ",

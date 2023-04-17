@@ -49,7 +49,9 @@ class _ElementosState extends State<Elementos> {
 
   Widget dieta(){
     return Row(children: [
+     
       RadioListTile(
+        secondary: Icon(Icons.female),
           title: Text("Si"),
           value: "Si", 
           groupValue: gender, 
@@ -196,7 +198,7 @@ class _ElementosState extends State<Elementos> {
   }
 
   Widget campoFechaUltimo(BuildContext context) {
-    String year;
+   
     return Padding(
       padding: EdgeInsets.only(left: 50, right: 50, top: 30),
     child: TextField(
@@ -215,7 +217,7 @@ class _ElementosState extends State<Elementos> {
           ),
       readOnly: true, //set it true, so that user will not able to edit text
       onTap: () async {
-        year=await funcionFecha(context);
+        String year=await funcionFecha(context);
           setState(()  {
             boxEdad.text = year;
           });

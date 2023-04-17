@@ -13,6 +13,7 @@ class Historial extends StatefulWidget {
 
 class _HistorialState extends State<Historial> {
   bool band = true;
+  String pathImage="asset/Farmaco/";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +61,7 @@ class _HistorialState extends State<Historial> {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
         child: Row(children: [
-          Image.asset("asset/insulina.png"),
+          Image.asset("${pathImage}jeringa.png"),
           SizedBox(
             width: 20,
           ),

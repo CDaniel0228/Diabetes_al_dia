@@ -38,25 +38,45 @@ class ConexionDB {
   void tablaUsuario(Database bd) {
     bd.execute('DROP TABLE IF EXISTS Usuarios');
     bd.execute('''CREATE TABLE Usuarios(
-            nombre	TEXT NOT NULL,
-            genero	TEXT NOT NULL,
+            nombres	TEXT NOT NULL,
+            apellidos	TEXT NOT NULL
             edad	TEXT NOT NULL, 
+            genero	TEXT NOT NULL,
             peso	REAL NOT NULL,
             estatura	REAL NOT NULL,
             PRIMARY KEY(nombre))''');
+  }
+
+  void tablaDatosMedicos(Database bd) {
+    bd.execute('DROP TABLE IF EXISTS Usuarios');
+    bd.execute('''CREATE TABLE Usuarios(
+            id	INTEGER,
+            nombres	TEXT NOT NULL,
+            pregunta1	BOOLEAN NOT NULL,
+            pregunta2	BOOLEAN NOT NULL
+            pregunta3	BOOLEAN NOT NULL,
+            pregunta4	BOOLEAN NOT NULL,
+            pregunta5	BOOLEAN NOT NULL
+            pregunta6	BOOLEAN NOT NULL, 
+            calorias	REAL NOT NULL,
+            pregunta7	BOOLEAN NOT NULL
+            alimentos	TEXT NOT NULL,
+            FOREIGN KEY(nombres) REFERENCES Usuarios(nombre) ON DELETE CASCADE,
+            PRIMARY KEY(id AUTOINCREMENT))''');
+            
   }
 
   void tablaHistorial(Database bd) {
     bd.execute('DROP TABLE IF EXISTS Historial');
     bd.execute('''CREATE TABLE Historial(
             id	INTEGER,
-            nombre	TEXT NOT NULL,
+            nombres	TEXT NOT NULL,
             genero	TEXT NOT NULL,
             edad	TEXT NOT NULL,
             peso	REAL NOT NULL,
             estatura	REAL NOT NULL,
             fecha	TEXT NOT NULL,
-            FOREIGN KEY(nombre) REFERENCES Usuarios(nombre) ON DELETE CASCADE,
+            FOREIGN KEY(nombres) REFERENCES Usuarios(nombres) ON DELETE CASCADE,
             PRIMARY KEY(id AUTOINCREMENT))''');
   }
 

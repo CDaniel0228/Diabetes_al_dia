@@ -5,6 +5,7 @@ import 'PopMenu.dart';
 
 class Camaras extends StatelessWidget {
   TextEditingController? add;
+    String pathImage="asset/Farmaco/";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +40,9 @@ class Camaras extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            tipoMedicina("asset/capsula.png", "f"),
-            tipoMedicina("asset/pastilla.png", "f"),
-            tipoMedicina("asset/insulina.png", "f")
+            tipoMedicina("${pathImage}capsula.png", "f"),
+            tipoMedicina("${pathImage}pastilla.png", "f"),
+            tipoMedicina("${pathImage}jeringa.png", "f")
           ],
         )
       ],

@@ -1,4 +1,6 @@
 import 'package:diabetes_al_dia/Vista/Navegatior/Navs.dart';
+import 'package:diabetes_al_dia/Vista/PopMenu/Perfil.dart';
+import 'package:diabetes_al_dia/Vista/PopMenu/Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Bienvenida.dart';
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => isviewed != 0 ? const Bienvenida() : SplashScreen().animacion(),
         '/splash': (context) => SplashScreen().animacion(),
         '/navs': (context) => const Navs(),
+        '/perfil': (context) => const Perfil(),
+        '/setting': (context) => const Setting(),
+
       },
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
