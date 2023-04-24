@@ -9,7 +9,7 @@ class DesingInput {
       margin: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
         controller: control,
-        initialValue: 'Input text',
+        //initialValue: 'Input text',
         maxLength: 20,
         decoration: InputDecoration(
           filled: true,
@@ -61,11 +61,12 @@ class DesingInput {
         firstDate: DateTime(
             2000), //DateTime.now() - not to allow to choose before today.
         lastDate: DateTime(2101));
-
+      String aux="";
     if (pickedDate != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       DateTime date3 = DateTime.parse(formattedDate);
       final date2 = DateTime.now().difference(date3).inDays;
+      aux=formattedDate;
       int A = date2 ~/ 365;
       int M = date2 ~/ 30;
       if (A >= 2) {
@@ -77,7 +78,8 @@ class DesingInput {
       year = "Fecha no seleccionada";
     }
           setState(()  {
-            control.text = year;
+            control.text = aux;
+            print(aux);
           });
         
       },

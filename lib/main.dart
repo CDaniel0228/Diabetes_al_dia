@@ -10,12 +10,14 @@ import 'package:timezone/data/latest.dart' as tz;
 
 
 int? isviewed;
+int? wiz;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   tz.initializeTimeZones();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isviewed = prefs.getInt('onBoard');
+  wiz = prefs.getInt('wizart');
   runApp(MyApp());
 }
 
@@ -26,10 +28,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => isviewed != 0 ? const Bienvenida() : SplashScreen().animacion(),
-        '/splash': (context) => SplashScreen().animacion(),
+        '/': (context) => isviewed != 0 ? const Bienvenida() : SplashScreen().animacion(wiz),
+        '/splash': (context) => SplashScreen().animacion(wiz),
         '/navs': (context) => const Navs(),
-        '/perfil': (context) => const Perfil(),
         '/setting': (context) => const Setting(),
 
       },
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         // ignore: avoid_print
         print('Ruta llamado ${settings.name}');
         return MaterialPageRoute(
-            builder: (BuildContext builder) => SplashScreen().animacion());
+            builder: (BuildContext builder) => SplashScreen().animacion(wiz));
       },
     );
   }

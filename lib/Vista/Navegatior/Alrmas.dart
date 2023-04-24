@@ -28,6 +28,7 @@ class _AlarmasState extends State<Alarmas> {
           mainAxisAlignment: MainAxisAlignment.center,
           children:   [
             Text("Duracion"),
+            Text("Elegir medicamento"),
             addMedicamentos(),
             Text("Horario"),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [Text("8 horas"), Text("12 horas"), Text("24 horas")],),

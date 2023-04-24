@@ -149,7 +149,6 @@ class _BienvenidaState extends State<Bienvenida> {
                   ),
                   InkWell(
                     onTap: () async {
-                      print(index);
                       if (index == screens.length - 1) {
                         await _storeOnboardInfo();
                         // ignore: use_build_context_synchronously

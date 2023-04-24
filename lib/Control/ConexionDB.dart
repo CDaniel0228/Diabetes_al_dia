@@ -9,9 +9,9 @@ class ConexionDB {
       join(path, 'scd.db'),
       onCreate: (db, version) async {
         tablaUsuario(db);
-        tablaHistorial(db);
-        triggerInsertar(db);
-        triggerActualizar(db);
+        //tablaHistorial(db);
+        //triggerInsertar(db);
+        //triggerActualizar(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion == 1) {
@@ -39,17 +39,31 @@ class ConexionDB {
     bd.execute('DROP TABLE IF EXISTS Usuarios');
     bd.execute('''CREATE TABLE Usuarios(
             nombres	TEXT NOT NULL,
-            apellidos	TEXT NOT NULL
-            edad	TEXT NOT NULL, 
+            apellidos	TEXT NOT NULL,
+            fecha_nacimiento TEXT NOT NULL, 
+            genero TEXT NOT NULL,
+            peso	REAL NOT NULL,
+            estatura	REAL NOT NULL,
+            imagen TEXT NOT NULL,
+            PRIMARY KEY(nombres))''');
+  }
+
+   void tablaMedicamento(Database bd) {
+    bd.execute('DROP TABLE IF EXISTS Medicamentos');
+    bd.execute('''CREATE TABLE Medicamentos(
+            id	INTEGER,
+            nombres	TEXT NOT NULL,
+            cantidad	TEXT NOT NULL
+            tipo	TEXT NOT NULL, 
             genero	TEXT NOT NULL,
             peso	REAL NOT NULL,
             estatura	REAL NOT NULL,
-            PRIMARY KEY(nombre))''');
+            PRIMARY KEY(id AUTOINCREMENT))''');
   }
 
   void tablaDatosMedicos(Database bd) {
-    bd.execute('DROP TABLE IF EXISTS Usuarios');
-    bd.execute('''CREATE TABLE Usuarios(
+    bd.execute('DROP TABLE IF EXISTS DatosMedicos');
+    bd.execute('''CREATE TABLE DatosMedicos(
             id	INTEGER,
             nombres	TEXT NOT NULL,
             pregunta1	BOOLEAN NOT NULL,

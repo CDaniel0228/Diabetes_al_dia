@@ -29,6 +29,8 @@ dependencies:
   rxdart:
   flutter_native_timezone:
   android_alarm_manager_plus:
+  search_choices: ^2.2.5
+  image_picker: ^0.8.7+4
   
 
 dev_dependencies:

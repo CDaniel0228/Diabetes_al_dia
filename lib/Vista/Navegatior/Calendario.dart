@@ -34,10 +34,7 @@ class _HomeState extends State<Home> {
         child: Column(
       children: [
         Text("Mis medicamentos"),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [dia("1"), dia("2"),dia("3"), dia("4"),dia("5"), dia("6"), dia("7")],
-        ),
+        WeekdaysGrid(),
         Text("Hoy"),
         lista(),
       ],
@@ -75,5 +72,49 @@ class _HomeState extends State<Home> {
             ],
           )
         ]));
+  }
+}
+
+
+class WeekdaysGrid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    List<String> weekdays = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"];
+    return 
+       GridView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+      itemCount: weekdays.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 7,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        String weekday = weekdays[index];
+        
+        bool isToday =
+            DateTime.now().weekday == index + 1; // Check if it's today
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isToday
+                  ? Colors.blue
+                  : Colors.transparent, // Highlight today's date
+              width: 2.0,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              weekday,
+              style: TextStyle(
+                fontSize: 18.0,
+                color: isToday ? Colors.blue : Colors.black,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -19,7 +19,14 @@ class UsuarioDB extends ConexionDB {
   find(String nombre) async {
     final Database db = await initializeDB();
     var res =
-        await db.query("Usuarios", where: "nombre = ?", whereArgs: [nombre]);
+        await db.query("Usuarios", where: "nombres = ?", whereArgs: [nombre]);
+    return res.isNotEmpty ? Usuario.fromMap(res.first) : null;
+  }
+
+  find2() async {
+    final Database db = await initializeDB();
+    var res = await db.query("Usuarios");
+    print(res.first);
     return res.isNotEmpty ? Usuario.fromMap(res.first) : null;
   }
 
@@ -35,7 +42,7 @@ class UsuarioDB extends ConexionDB {
   Future<int> update(Usuario note) async {
     final Database db = await initializeDB();
     return db
-        .update("Usuarios", note.toMap(), where: 'nombre = ?', whereArgs: [note.nombre]);
+        .update("Usuarios", note.toMap(), where: 'nombre = ?', whereArgs: [note.nombres]);
   }
 
 }
