@@ -1,23 +1,33 @@
 // ignore: file_names
+import 'package:diabetes_al_dia/Modelo/medicamentos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:search_choices/search_choices.dart';
 
 import 'PopMenu.dart';
 
 class Camaras extends StatefulWidget {
-  const Camaras({super.key});
+  final List<Map<String, dynamic>> medicamentos;
+  Camaras(this.medicamentos);
 
   @override
-  State<Camaras> createState() => _CamarasState();
+  State<Camaras> createState() => _CamarasState(medicamentos);
 }
 
 class _CamarasState extends State<Camaras> {
-  TextEditingController? add, cont;
+  List<Map<String, dynamic>> medicamentos;
+  _CamarasState(this.medicamentos);
+  List<Medicamentos> productos = [];
+  TextEditingController add=TextEditingController();
+  TextEditingController?  cont;
   String pathImage = "asset/Farmaco/";
+  String? selectedValueSingleMenu;
+  List nombres = [];
+  int _selectedIndex = -1;
   int contador = 0;
   @override
   Widget build(BuildContext context) {
+    print("object");
+    print(medicamentos.length);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Medicamentos"),
@@ -34,9 +44,9 @@ class _CamarasState extends State<Camaras> {
     return Container(
         child: Column(
       children: [
-        Text("Agregar medicamentos"),
+        const Text("Agregar medicamentos"),
         addMedicamentos(),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Row(
@@ -44,24 +54,7 @@ class _CamarasState extends State<Camaras> {
           children: [
             Column(
               children: [
-                Text("Cantidad"),
-
-                //mainAxisSize: MainAxisSize.min,
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                //mainAxisAlignment: MainAxisAlignment.center,
-
-                /*Container(
-                      height: 30,
-                      width: 80,
-                      child: TextFormField(
-                        controller: cont,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                      ),
-                    ),*/
+                const Text("Cantidad"),
                 Container(
                   padding: const EdgeInsets.all(5.0),
                   height: 50,
@@ -93,14 +86,14 @@ class _CamarasState extends State<Camaras> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
-        Text(
+        const Text(
           "Tipo de medicina",
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Row(
@@ -120,7 +113,7 @@ class _CamarasState extends State<Camaras> {
             ),
             Column(
               children: [
-                Text("Injeccion"),
+                Text("Inyeccion"),
                 tipoMedicina("${pathImage}jeringa.png", "f")
               ],
             )
@@ -139,23 +132,6 @@ class _CamarasState extends State<Camaras> {
       ],
     ));
   }
-
-  /*buscaFiltra(){
-    return SearchChoices.single(
-        items: items,
-        value: selectedValueSingleMenu,
-        hint: "Select one",
-        searchHint: null,
-        onChanged: (value) {
-          setState(() {
-            selectedValueSingleMenu = value;
-          });
-        },
-        dialogBox: false,
-        isExpanded: true,
-        menuConstraints: BoxConstraints.tight(Size.fromHeight(350)),
-      );
-  }*/
 
   btnContador() {
     return Container(
@@ -193,7 +169,7 @@ class _CamarasState extends State<Camaras> {
         ));
   }
 
-  Widget tipoMedicina(imagen, nombre) {
+  tipoMedicina(imagen, nombre) {
     return Container(
       child: Column(
         children: [Image.asset(imagen, height: 50), Text(nombre)],
@@ -202,24 +178,72 @@ class _CamarasState extends State<Camaras> {
   }
 
   Widget addMedicamentos() {
-    return Padding(
-        //flatbutton
-        padding: EdgeInsets.only(left: 50, right: 50, top: 30),
-        child: TextField(
-            controller: add,
-            enabled: true,
-            decoration: decoracionBox("Nombre")));
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 50, right: 50, top: 30),
+            child: TextField(
+                
+                onChanged: (value) {
+                  setState(() {
+                    List<Map<String, dynamic>> medicamentosFiltrados =
+                        medicamentos
+                            .where((medicamento) => medicamento["nombre"]
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                    nombres = medicamentosFiltrados
+                        .map((medicamento) => medicamento['nombre'])
+                        .toList();
+                    print(nombres);
+                  });
+                },
+                controller: add,
+                enabled: true,
+                decoration: decoracionBox("Nombre"))),
+        Container(
+          height: 100,
+          width: 150,
+          child: ListView.builder(
+            itemCount: nombres.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = index;
+                    add.text=nombres[index];
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    color: _selectedIndex == index ? Colors.blue : null,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    nombres[index],
+                    style: TextStyle(
+                      color: _selectedIndex == index ? Colors.black : null,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   decoracionBox(nombre) {
     return InputDecoration(
         labelText: nombre,
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(width: 3, color: Colors.black),
+          borderSide: const BorderSide(width: 2, color: Colors.black),
           borderRadius: BorderRadius.circular(15),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(width: 3, color: Colors.red),
+          borderSide: const BorderSide(width: 2, color: Colors.black),
           borderRadius: BorderRadius.circular(15),
         ));
   }

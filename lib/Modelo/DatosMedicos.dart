@@ -18,24 +18,36 @@ class DatosMedicos {
       this.pregunta3,
       this.pregunta4,
       this.pregunta5,
-      this.pregunta6});
-      
+      this.pregunta6,
+      this.calorias,
+      this.pregunta7,
+      this.alimentos,
+      this.nombres});
+
   DatosMedicos.fromMap(Map<String, dynamic> item)
-      : pregunta1 = item["nombres"],
-        pregunta2 = item["apellidos"],
-        pregunta3 = item["fecha_nacimiento"],
-        pregunta4 = item["genero"],
-        pregunta5 = item["peso"],
-        pregunta6 = item["estatura"];
+      : pregunta1 = item["pregunta1"],
+        pregunta2 = item["pregunta2"],
+        pregunta3 = item["pregunta3"],
+        pregunta4 = item["pregunta4"],
+        pregunta5 = item["pregunta5"],
+        pregunta6 = item["pregunta6"],
+        calorias = item["calorias"],
+        pregunta7 = item["pregunta7"],
+        alimentos = item["alimentos"],
+        nombres = item["nombres"];
 
   Map<String, dynamic> toMap() {
     return {
-      'nombres': pregunta1,
-      'apellidos': pregunta1,
-      'fecha_nacimiento': pregunta3,
-      'genero': pregunta4,
-      'peso': pregunta5,
-      'estatura': pregunta6
+      'pregunta1': pregunta1,
+      'pregunta2': pregunta2,
+      'pregunta3': pregunta3,
+      'pregunta4': pregunta4,
+      'pregunta5': pregunta5,
+      'pregunta6': pregunta6,
+      'calorias': calorias,
+      'pregunta7': pregunta7,
+      'alimentos': pregunta5,
+      'nombres': nombres
     };
   }
 }

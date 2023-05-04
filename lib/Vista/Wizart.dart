@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:diabetes_al_dia/Control/UsuarioDB.dart';
+import 'package:diabetes_al_dia/Modelo/DatosMedicos.dart';
 import 'package:diabetes_al_dia/Modelo/Usuario.dart';
 import 'package:diabetes_al_dia/Vista/DesingInput.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,15 @@ class _FormPageState extends State<FormPage> {
   String boxGenero = "female";
   String pathImage = "asset/Avatar/";
   String imgAvatar = "him1.jpg";
-  int currentStep = 0;
+  bool p1 = false,
+      p2 = false,
+      p3 = false,
+      p4 = false,
+      p5 = false,
+      p6 = false,
+      p7 = false;
 
+  int currentStep = 0;
   _storeOnboardInfo() async {
     print("Shared pref called");
     int isViewed = 0;
@@ -103,6 +111,17 @@ class _FormPageState extends State<FormPage> {
                                                   boxEstatura.text),
                                               imagen: imgAvatar));
                                           await _storeOnboardInfo();
+                                          UsuarioDB().crateItem2(DatosMedicos(
+                                              pregunta1: p1,
+                                              pregunta2: p2,
+                                              pregunta3: p3,
+                                              pregunta4: p4,
+                                              pregunta5: p5,
+                                              pregunta6: p6,
+                                              pregunta7: p7,
+                                              alimentos: "d",
+                                              calorias: 23,
+                                              nombres: boxNombres.text));
                                           Navigator.pushNamed(context, '/navs');
                                         } else {
                                           print("object");
@@ -230,23 +249,23 @@ class _FormPageState extends State<FormPage> {
           children: [
             const Text("¿Esta siguiendo una dieta especial?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p1, 1),
             const Text("¿Esta tomando insulina u otro medicamento?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p2, 2),
             const Text("¿Ha sufrido alguna vez un coma diabetico?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p3, 3),
             const Text(
                 "¿Tiene dificultad en la vision o trastorno de la vista?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p4, 4),
             const Text("¿Sufre o a sufrido de la presion alta?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p5, 5),
             const Text("¿Se hace analisis regulares de azucar en la orina?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas()
+            preguntas(p6, 6)
             //Precion alta
             //sufre de Problemas caridacos
             //problemas de riñones
@@ -265,7 +284,7 @@ class _FormPageState extends State<FormPage> {
                 .CustomInput(boxCalorias, Icons.person, "Consumo de Calorias"),
             const Text("¿Sigue una dieta especial?",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            preguntas(),
+            preguntas(p7, 7),
             DesingInput().CustomInput(
                 boxCalorias, Icons.person, "Que alimentos suele consumir"),
             //Ejercicio
@@ -285,7 +304,7 @@ class _FormPageState extends State<FormPage> {
         fechaNacimiento.text.isNotEmpty;
   }
 
-  preguntas() {
+  preguntas(preguntas, numero) {
     return Row(children: [
       Expanded(
           flex: 1,
@@ -294,22 +313,53 @@ class _FormPageState extends State<FormPage> {
                 style: TextStyle(
                   fontSize: 14,
                 )),
-            value: "Si",
-            groupValue: boxGenero,
+            value: true,
+            groupValue: preguntas,
             onChanged: (value) {
-              boxGenero = value!;
+              setState(() {
+                cambio(value, numero);
+              });
             },
           )),
       Expanded(
           flex: 1,
           child: RadioListTile(
             title: Text("No", style: TextStyle(fontSize: 14)),
-            value: "male",
-            groupValue: boxGenero,
+            value: false,
+            groupValue: preguntas,
             onChanged: (value) {
-              boxGenero = value!;
+              setState(() {
+                cambio(value, numero);
+              });
             },
           )),
     ]);
+  }
+
+  cambio(value, numero) {
+    switch (numero) {
+      case 1:
+        p1 = value;
+        break;
+      case 2:
+        p2 = value;
+        break;
+      case 3:
+        p3 = value;
+        break;
+      case 4:
+        p4 = value;
+        break;
+      case 5:
+        p5 = value;
+        break;
+      case 6:
+        p6 = value;
+        break;
+      case 7:
+        p7 = value;
+        break;
+      default:
+    }
   }
 }

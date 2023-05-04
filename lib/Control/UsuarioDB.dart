@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'package:diabetes_al_dia/Modelo/DatosMedicos.dart';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 
@@ -11,6 +12,12 @@ class UsuarioDB extends ConexionDB {
   Future<int> crateItem(Usuario usuario) async {
     final Database db = await initializeDB();
     final id =  await db.insert('Usuarios', usuario.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+  Future<int> crateItem2(DatosMedicos datosMedicos) async {
+    final Database db = await initializeDB();
+    final id =  await db.insert('DatosMedicos', datosMedicos.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
