@@ -26,8 +26,9 @@ class NotificationService {
 
   notificationDetails() {
     return const NotificationDetails(
+      
         android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
+            importance: Importance.max, sound: RawResourceAndroidNotificationSound('asset/tono.mp3')),
         iOS: DarwinNotificationDetails());
   }
 
@@ -56,4 +57,75 @@ class NotificationService {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
   }
+  Future<void> scheduleNotification2({
+  int id = 0,
+  String? title,
+  String? body,
+  String? payLoad,
+  required DateTime scheduledNotificationDateTime,
+  List<int>? daysOfWeek, // Lista de días de la semana en los que se programará la notificación
+}) async {
+  
+  if (daysOfWeek != null && daysOfWeek.isNotEmpty) {
+    // Filtrar los días de la semana seleccionados
+    final filteredDays = daysOfWeek.where((day) => day >= 1 && day <= 7).toSet();
+    
+    if (filteredDays.isNotEmpty) {
+      final now = DateTime.now();
+      final currentDay = now.weekday;
+      final scheduledDay = scheduledNotificationDateTime.weekday;
+      final scheduledTime = scheduledNotificationDateTime;
+
+      // Calcular el próximo día de la semana seleccionado
+      int nextDay = filteredDays.firstWhere((day) => day >= currentDay, orElse: () => filteredDays.first);
+
+      if (currentDay == scheduledDay && now.isBefore(scheduledTime)) {
+        // Si el día actual es igual al día programado y la hora aún no ha pasado,
+        // se programará la notificación para hoy a la hora elegida
+        final notificationDateTime = DateTime(now.year, now.month, now.day, scheduledTime.hour, scheduledTime.minute);
+        await notificationsPlugin.zonedSchedule(
+          id,
+          title,
+          body,
+          tz.TZDateTime.from(notificationDateTime, tz.local),
+          await notificationDetails(),
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        );
+      } else {
+        // Calcular el siguiente día de la semana seleccionado
+        if (nextDay == currentDay) {
+          nextDay = filteredDays.firstWhere((day) => day >= 1, orElse: () => filteredDays.first);
+        }
+
+        // Calcular la diferencia de días hasta el siguiente día seleccionado
+        final dayDifference = nextDay - currentDay;
+        final nextNotificationDate = now.add(Duration(days: dayDifference));
+
+        // Programar la notificación para el siguiente día seleccionado a la hora elegida
+        final notificationDateTime = DateTime(nextNotificationDate.year, nextNotificationDate.month, nextNotificationDate.day, scheduledTime.hour, scheduledTime.minute);
+        await notificationsPlugin.zonedSchedule(
+          id,
+          title,
+          body,
+          tz.TZDateTime.from(notificationDateTime, tz.local),
+          await notificationDetails(),
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        );
+      }
+    }
+  } else {
+    // Si no se especifican días de la semana, programar la notificación para la fecha y hora especificadas
+    await notificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledNotificationDateTime, tz.local),
+      await notificationDetails(),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+}
 }

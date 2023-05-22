@@ -7,35 +7,25 @@ import 'package:flutter/material.dart';
 
 import 'ConexionDB.dart';
 
-class MedicamentosDB extends ConexionDB {
+class InventarioDB extends ConexionDB {
   Future<int> crateItem(Medicamentos usuario) async {
     final Database db = await initializeDB();
-    final id =  await db.insert('Medicamentos', usuario.toMap(),
+    final id =  await db.insert('Inventario', usuario.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
 
   find() async {
     final Database db = await initializeDB();
-    List<Map<String, dynamic>> res2=[];
-    List<Map<String, dynamic>> res= await db.query("Medicamentos");
+    List<Map<String, dynamic>> res= await db.query("Inventario");
     print(res);
-    print("fio");
-    return res.isNotEmpty ? res : res2;
-  }
-
-  findband(nombre) async {
-    final Database db = await initializeDB();
-    List<Map<String, dynamic>> res= await db.query("Medicamentos", where: "nombre = ?", whereArgs: [nombre]);
-    print(res);
-    print("fio");
-    return res.isNotEmpty ? true : false;
+    return res.isNotEmpty ? res : null;
   }
 
   Future<void> delete(String nombre) async {
     final Database db = await initializeDB();
     try {
-      await db.delete("Medicamentos", where: "nombre = ?", whereArgs: [nombre]);
+      await db.delete("Inventario", where: "nombre = ?", whereArgs: [nombre]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }
@@ -44,7 +34,7 @@ class MedicamentosDB extends ConexionDB {
   Future<int> update(Medicamentos note) async {
     final Database db = await initializeDB();
     return db
-        .update("Medicamentos", note.toMap(), where: 'nombre = ?', whereArgs: [note.nombre]);
+        .update("Inventario", note.toMap(), where: 'nombre = ?', whereArgs: [note.nombre]);
   }
 
 }

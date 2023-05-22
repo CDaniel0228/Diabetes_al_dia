@@ -1,14 +1,15 @@
 // ignore: file_names
+import 'package:diabetes_al_dia/Control/CalendarioDB.dart';
 import 'package:diabetes_al_dia/Control/MedicamentosDB.dart';
 import 'package:diabetes_al_dia/Vista/Navegatior/Historial.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
+import '../../Control/InventarioDB.dart';
 import 'Alarmas2.dart';
 import 'Medicamentos.dart';
 import 'Calendario.dart';
-import 'Alrmas.dart';
 import 'Recomendaciones.dart';
 
 class Navs extends StatefulWidget {
@@ -21,11 +22,12 @@ class Navs extends StatefulWidget {
 
 class _NavsState extends State<Navs> {
   int _selectedIndex = 0;
-  static List<Map<String, dynamic>> medicamentos=[];
-   List<Widget> _pages = [
+  static List<Map<String, dynamic>> inventario = [];
+  static List<Map<String, dynamic>> medicamentos = [];
+  List<Widget> _pages = [
     Home(),
-    Camaras(medicamentos),
-    AlarmScreen(),
+    Camaras(inventario),
+    AlarmScreen(medicamentos),
     Sensores(),
     Historial(),
   ];
@@ -60,13 +62,30 @@ class _NavsState extends State<Navs> {
         currentIndex: _selectedIndex,
         indicatorHeight: 2,
         onTap: (index) async {
-          if (index == 1) {
-             medicamentos = await MedicamentosDB().find();
+          switch (index) {
+            
+            case 1:
+              inventario = await InventarioDB().find();
+              break;
+            case 2:
+              medicamentos = await MedicamentosDB().find();
+              break;
+
+            default:
           }
+
           setState(() {
-            if (index == 1) {
-              _pages[1] = Camaras(medicamentos);
+            switch (index) {
+             
+              case 1:
+                _pages[1] = Camaras(inventario);
+                break;
+              case 2:
+              _pages[2] = AlarmScreen(medicamentos);
+                break;
+              default:
             }
+
             _selectedIndex = index;
           });
         },

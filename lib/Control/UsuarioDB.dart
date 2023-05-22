@@ -49,7 +49,7 @@ class UsuarioDB extends ConexionDB {
   Future<int> update(Usuario note) async {
     final Database db = await initializeDB();
     return db
-        .update("Usuarios", note.toMap(), where: 'nombre = ?', whereArgs: [note.nombres]);
+        .update("Usuarios", note.toMap(), where: 'nombres = ?', whereArgs: [note.nombres]);
   }
 
 }

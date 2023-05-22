@@ -10,8 +10,10 @@ class ConexionDB {
       onCreate: (db, version) async {
         tablaUsuario(db);
         tablaDatosMedicos(db);
-        tablaMedicamento(db);
-        insertarMedicamentos(db);
+        tablaInventario(db);
+        insertarInventario(db);
+        tablaMedicamentos(db);
+        tablaAlarmas(db);
         //tablaHistorial(db);
         //triggerInsertar(db);
         //triggerActualizar(db);
@@ -51,7 +53,17 @@ class ConexionDB {
             PRIMARY KEY(nombres))''');
   }
 
-   void tablaMedicamento(Database bd) {
+   void tablaInventario(Database bd) {
+    bd.execute('DROP TABLE IF EXISTS inventario');
+    bd.execute('''CREATE TABLE inventario(
+            nombre	TEXT NOT NULL,
+            tipo	TEXT NOT NULL, 
+            cantidad INTEGER	 NOT NULL,
+            dosis	INTEGER NOT NULL,
+            PRIMARY KEY(nombre))''');
+  }
+
+  void tablaMedicamentos(Database bd) {
     bd.execute('DROP TABLE IF EXISTS Medicamentos');
     bd.execute('''CREATE TABLE Medicamentos(
             nombre	TEXT NOT NULL,
@@ -61,33 +73,46 @@ class ConexionDB {
             PRIMARY KEY(nombre))''');
   }
 
-  void insertarMedicamentos(Database bd) {
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Metformina", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Inibidores da DPP-4", "Capsula", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Inibidores do SGLT2", "Capsula", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Agonistas do receptor GLP-1", "Capsula", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Inibidores da alfa-glicosidase", "Capsula", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Tiazolidinedionas", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Meglitinidas", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Sulfonilureias", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Biguanidas", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina lispro", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina aspart", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina glargina", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina detemir", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Insulina degludeca", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Exenatida", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Liraglutida", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Dulaglutida", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Semaglutida", "Inyeccion", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Canagliflozina", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Dapagliflozina", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Empagliflozina", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Acarbosa", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Miglitol", "Tableta", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Pioglitazona", "Capsula", 1, 1 )''');
-    bd.execute(''' INSERT INTO Medicamentos(nombre, tipo, cantidad, dosis) VALUES("Rosiglitazona", "Capsula", 1, 1 )''');
+  void tablaAlarmas(Database bd) {
+    bd.execute('DROP TABLE IF EXISTS Alarmas');
+    bd.execute('''CREATE TABLE Alarmas(
+            ID  INTEGER NOT NULL,
+            dias TEXT NOT NULL,
+            fecha_inicio TEXT NOT NULL,
+            hora	TEXT NOT NULL,
+            duracion TEXT NOT NULL,
+            medicamento	TEXT NOT NULL,
+            PRIMARY KEY("ID" AUTOINCREMENT),
+            FOREIGN KEY(medicamento) REFERENCES Medicamentos(nombre) ON DELETE CASCADE)''');
+  }
+
+  void insertarInventario(Database bd) {
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Metformina", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Inibidores da DPP-4", "Capsula", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Inibidores do SGLT2", "Capsula", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Agonistas do receptor GLP-1", "Capsula", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Inibidores da alfa-glicosidase", "Capsula", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Tiazolidinedionas", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Meglitinidas", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Sulfonilureias", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Biguanidas", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina lispro", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina aspart", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina glargina", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina detemir", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Insulina degludeca", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Exenatida", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Liraglutida", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Dulaglutida", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Semaglutida", "Inyeccion", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Canagliflozina", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Dapagliflozina", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Empagliflozina", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Acarbosa", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Miglitol", "Tableta", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Pioglitazona", "Capsula", 1, 1 )''');
+    bd.execute(''' INSERT INTO inventario(nombre, tipo, cantidad, dosis) VALUES("Rosiglitazona", "Capsula", 1, 1 )''');
   }
 
   void tablaDatosMedicos(Database bd) {

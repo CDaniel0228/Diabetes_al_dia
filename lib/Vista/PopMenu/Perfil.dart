@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:diabetes_al_dia/Control/Mensajes.dart';
+import 'package:diabetes_al_dia/Control/UsuarioDB.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../Modelo/Usuario.dart';
@@ -20,11 +22,7 @@ class _PerfilState extends State<Perfil> {
   final boxFechaNacimiento = TextEditingController();
   final boxPeso = TextEditingController();
   final boxEstatura = TextEditingController();
-  bool bandN = false,
-      bandA = false,
-      bandF = false,
-      bandP = false,
-      bandE = false;
+  bool bandA = false, bandF = false, bandP = false, bandE = false;
   var imageFile, nombrePath;
   final ImagePicker _picker = ImagePicker();
   @override
@@ -48,13 +46,18 @@ class _PerfilState extends State<Perfil> {
         child: Column(
       children: [
         imagenPerfil(context),
-        campoTexto(bandN, boxNombres, "Nombres"),
+        Container(
+            width: 350,
+            padding: const EdgeInsets.only(right: 90, top: 30),
+            child: TextField(
+                enabled: false,
+                controller: boxNombres,
+                decoration: decoracion("Nombres"))),
         campoTexto(bandA, boxApellidos, "Apellidos"),
         campoTexto(bandF, boxFechaNacimiento, "Fecha de Nacimiento"),
         campoTexto(bandP, boxPeso, "Peso"),
         campoTexto(bandE, boxEstatura, "Estatura"),
         botonGuardar(context),
-        
       ],
     ));
   }
@@ -70,8 +73,7 @@ class _PerfilState extends State<Perfil> {
               image: DecorationImage(
                   fit: BoxFit.contain,
                   image: imageFile != null
-                      ? FileImage(File(imageFile))
-                          as ImageProvider
+                      ? FileImage(File(imageFile)) as ImageProvider
                       : AssetImage(lista.imagen.toString()))),
           child: Stack(alignment: Alignment.center, children: [
             //Container
@@ -104,9 +106,6 @@ class _PerfilState extends State<Perfil> {
           onPressed: () {
             setState(() {
               switch (hint) {
-                case "Nombres":
-                  bandN = true;
-                  break;
                 case "Apellidos":
                   bandA = true;
                   break;
@@ -137,7 +136,18 @@ class _PerfilState extends State<Perfil> {
                 borderRadius: BorderRadius.circular(10),
               ),
               backgroundColor: Color(0xFF11253c)),
-          onPressed: () async {},
+          onPressed: () async {
+            print(boxNombres.text);
+            UsuarioDB().update(Usuario(
+                nombres: boxNombres.text,
+                apellidos: boxApellidos.text,
+                fecha_nacimiento: boxFechaNacimiento.text,
+                peso: double.parse(boxPeso.text),
+                estatura: double.parse(boxEstatura.text),
+                genero: lista.genero.toString(),
+                imagen: lista.imagen.toString()));
+            Mensajes().info("Se guardaron los cambios");
+          },
           child: const Text(
             "Guardar cambios",
             style: TextStyle(fontSize: 15, color: Colors.white),
